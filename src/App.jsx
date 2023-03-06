@@ -14,10 +14,10 @@ function App() {
         icon: resultImg || URL.createObjectURL(img),
         text: `
           plant name : ${result.plant}
-          disease : ${result.disease}
+          disease : ${result.diseas}
           confd : ${result.confd}
         `,
-      });
+      }).then(()=>setResultImg(null));
   });
   return (
     <div className="App">
@@ -40,14 +40,14 @@ function App() {
           e.preventDefault();
           const formData = new FormData();
           formData.append("image", document.getElementById("image").files[0]);
-          fetch("http://localhost:3001/modelv1", {
+          fetch("http://localhost:3001/modelv2", {
             method: "POST",
             body: formData,
           })
             .then((res) => res.json())
             .then((data) => {
               fetch(
-                "http://192.168.0.101: 3001/modelv2image/" + data["image"],
+                "http://192.168.0.101:3001/modelv2image/" + data["image"],
                 { method: "GET" }
               )
                 .then((res) => res.blob())
