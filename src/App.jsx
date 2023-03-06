@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import swal from "sweetalert";
+import "sweetalert2/src/sweetalert2.scss";
+import Swal from "sweetalert2";
 
 function App() {
   const [img, setImg] = useState(null);
@@ -9,14 +10,18 @@ function App() {
 
   useEffect(() => {
     result !== null &&
-      swal({
-        title: "The model's result",
-        icon: resultImg || URL.createObjectURL(img),
-        text: `
-          plant name : ${result.plant}
-          disease : ${result.disease}
-          confd : ${result.confd}
+      Swal.fire({
+        title: `<h1 class="bg-slate-800 text-3xl text-gray-200 font-mono font-bold">The Model's Result</h1>`,
+        icon: "success",
+        imageUrl: resultImg || URL.createObjectURL(img),
+        html: `
+         <div class= "text-2xl text-slate-800 font-extrabold text-left font-mono ">
+         <p> Plant Name : ${result.plant ?? ""} </p>
+         <p> Disease     : ${result.diseas.join(" | ") ?? ""} </p>
+         <p> Confd       : ${result.confd ?? ""} </p>
+         </div>
         `,
+        preConfirm: () => setResult(null),
       });
   });
   return (
