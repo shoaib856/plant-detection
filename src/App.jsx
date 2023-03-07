@@ -25,7 +25,7 @@ function App() {
           </p> 
          </div>
          <hr class="my-5">
-         <div><span>Confd       :</span> <span class="text-slate-800">${result.confd+"%" ?? ""} </span></div>
+         <div><span>Confd       :</span> <span class="text-slate-800">${(result.confd !== null)? result.confd+"%" : ""} </span></div>
          </div>
         `,
         preConfirm: () => setResult(null),
@@ -35,7 +35,7 @@ function App() {
   const process = (modelType)=>{
     const formData = new FormData();
       formData.append("image", document.getElementById("image").files[0]);
-      fetch("http://localhost:3001/" + modelType, {
+      fetch("http://192.168.0.101:3001/" + modelType, {
         method: "POST",
         body: formData,
       })
@@ -43,7 +43,7 @@ function App() {
         .then((data) => {
           modelType == "modelv2" &&
           fetch(
-            "http://localhost:3001/modelv2image/" + data["image"],
+            "http://192.168.0.101:3001/modelv2image/" + data["image"],
             { method: "GET" }
           )
             .then((res) => res.blob())
