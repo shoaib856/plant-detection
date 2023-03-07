@@ -16,42 +16,52 @@ function App() {
         imageUrl: resultImg || URL.createObjectURL(img),
         html: `
          <div class= "text-2xl text-slate-400 font-extrabold text-left font-mono ">
-         <div><span>Plant Name :</span> <span class="text-slate-800">${result.plant ?? ""}</span> </div>
+         <div><span>Plant Name :</span> <span class="text-slate-800">${
+           result.plant ?? ""
+         }</span> </div>
          <hr class="my-5">
          <div> 
           <p>Disease     :</p>
           <p class="text-slate-800">
-          ${(Array.isArray(result.diseas))?result.diseas.join(" , ") ?? "" : result.diseas ?? ""}
+          ${
+            Array.isArray(result.diseas)
+              ? result.diseas.join(" , ") ?? ""
+              : result.diseas ?? ""
+          }
           </p> 
          </div>
          <hr class="my-5">
-         <div><span>Confd       :</span> <span class="text-slate-800">${(result.confd !== null)? result.confd+"%" : ""} </span></div>
+         <div><span>Confd       :</span> <span class="text-slate-800">${
+           result.confd !== null ? result.confd + "%" : ""
+         } </span></div>
          </div>
         `,
-        preConfirm: () => setResult(null),
+        preConfirm: () => {
+          setResult(null);
+          setResultImg(null);
+        },
       });
   });
 
-  const process = (modelType)=>{
+  const process = (modelType) => {
     const formData = new FormData();
-      formData.append("image", document.getElementById("image").files[0]);
-      fetch("http://192.168.0.101:3001/" + modelType, {
-        method: "POST",
-        body: formData,
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          modelType == "modelv2" &&
-          fetch(
-            "http://192.168.0.101:3001/modelv2image/" + data["image"],
-            { method: "GET" }
-          )
+    formData.append("image", document.getElementById("image").files[0]);
+    fetch("http://192.168.0.101:3001/" + modelType, {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        modelType == "modelv2" &&
+          fetch("http://192.168.0.101:3001/modelv2image/" + data["image"], {
+            method: "GET",
+          })
             .then((res) => res.blob())
             .then((blob) => setResultImg(URL.createObjectURL(blob)));
-          setResult(data);
-        })
-        .catch((e) => console.log(e));
-  }
+        setResult(data);
+      })
+      .catch((e) => console.log(e));
+  };
   return (
     <div className="App">
       <h1 className="mb-10">
@@ -80,8 +90,12 @@ function App() {
             setImg(e.target.files[0]);
           }}
         />
-        <button type="button" onClick={()=>process("modelv1")}>Process model1</button>
-        <button type="button" onClick={()=>process("modelv2")}>Process model2</button>
+        <button type="button" onClick={() => process("modelv1")}>
+          Process model1
+        </button>
+        <button type="button" onClick={() => process("modelv2")}>
+          Process model2
+        </button>
       </form>
     </div>
   );
