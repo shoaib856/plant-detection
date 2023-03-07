@@ -17,7 +17,7 @@ function App() {
         html: `
          <div class= "text-2xl text-slate-800 font-extrabold text-left font-mono ">
          <p> Plant Name : ${result.plant ?? ""} </p>
-         <p> Disease     : ${result.diseas.join(" | ") ?? ""} </p>
+         <p class="line"> Disease     : ${result.diseas.join(" | ") ?? ""} </p>
          <p> Confd       : ${result.confd ?? ""} </p>
          </div>
         `,
@@ -68,6 +68,7 @@ function App() {
           name="image"
           id="image"
           accept=".jpeg, .jpg"
+          capture= "user"
           onChange={(e) => {
             setImg(e.target.files[0]);
           }}
